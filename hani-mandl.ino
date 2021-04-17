@@ -93,7 +93,7 @@
 //
 // Hier den Code auf die verwendete Hardware einstellen
 //
-#define HARDWARE_LEVEL 4        // 1 = originales Layout mit Schalter auf Pin 19/22/21
+#define HARDWARE_LEVEL 5        // 1 = originales Layout mit Schalter auf Pin 19/22/21
                                 // 2 = Layout für V2 mit Schalter auf Pin 23/19/22
                                 // 3 = ESP32 DEVKit V2 AZ-Delivery
                                 // 4 = ESP32 DEVKitC 240x320 SPI TFT
@@ -119,7 +119,7 @@
 //
 // Ab hier nur verstellen wenn Du genau weisst, was Du tust!
 //
-#define isDebug 3             // serielle debug-Ausgabe aktivieren. Mit >3 wird jeder Messdurchlauf ausgegeben
+#define isDebug 0             // serielle debug-Ausgabe aktivieren. Mit >3 wird jeder Messdurchlauf ausgegeben
                                 // ACHTUNG: zu viel Serieller Output kann einen ISR-Watchdog Reset auslösen!
 //#define POTISCALE             // Poti simuliert eine Wägezelle, nur für Testbetrieb!
 
@@ -1799,7 +1799,19 @@ void processAutomatik(void)
 
   // Play/Pause Icon, ob die Automatik aktiv ist
   u8g2.setFont(u8g2_font_open_iconic_play_2x_t);
+  #ifdef use_TFT
+  if (auto_aktiv==1) {
+    u8g2.setForegroundColor(TFT_GREEN);
+    }
+  else {
+    u8g2.setForegroundColor(TFT_RED);
+  }
   u8g2.drawGlyph(0, 40, (auto_aktiv==1)?0x45:0x44 );
+  u8g2.setForegroundColor(TFT_WHITE);
+    
+  #elif
+  u8g2.drawGlyph(0, 40, (auto_aktiv==1)?0x45:0x44 );
+  #endif
 
   u8g2.setFont(u8g2_font_courB12_tf);
   // Zeile oben, Öffnungswinkel absolut und Prozent, Anzeige Autostart
@@ -1822,8 +1834,10 @@ void processAutomatik(void)
     int progressbar = 128.0*((float)gewicht/(float)zielgewicht);
     progressbar = constrain(progressbar,0,128);
 
-    drawFrame(0, 50, 128, 14,TFT_WHITE);
+    //drawFrame(0, 50, 128, 14,TFT_WHITE);
+    screen_zeigen();
     drawBox  (0, 50, progressbar, 14,TFT_WHITE );
+    
   }
   else
   {
@@ -1843,10 +1857,12 @@ void processAutomatik(void)
       }
   }
   u8g2.print(ausgabe);
+  screen_zeigen();
   }
 
 
-  screen_zeigen();
+  
+  
 }
 
 void processHandbetrieb(void)
@@ -2005,7 +2021,7 @@ void setup()
   spr.createSprite(240, 320);
   tft.fillScreen(TFT_BLACK);
   spr.setColorDepth(8); // Optionally set depth to 8 to halve RAM use
-  spr.createSprite(screen_size.breite, screen_size.hoehe);
+  spr.createSprite(TFT_WIDTH, TFT_HEIGHT);
   spr.setTextDatum(BL_DATUM);
   u8g2.setFontMode(0);                 // use u8g2 none transparent mode
   u8g2.setFontDirection(0);            // left to right (this is default)
@@ -2282,7 +2298,6 @@ void buzzer(byte type) {
     }
   }
 }
-
 void clearScreen(){
   #ifdef use_TFT
   //tft.fillScreen(TFT_BLACK);
@@ -2291,11 +2306,9 @@ void clearScreen(){
   u8g2.clearBuffer();
   #endif
 }
-
 void drawLine(int x0,int y0, int x1, int y1, uint32_t color){
   #ifdef use_TFT
   tft.drawLine(x0,y0,x1,y1,color);
-  spr.pushSprite(0, 0);
   #else
   u8g2.drawLine(x0,y0,x1,x0);
   #endif
