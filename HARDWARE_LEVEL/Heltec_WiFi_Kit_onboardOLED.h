@@ -15,7 +15,9 @@ const int servo_pin = 2;
 #if HARDWARE_LEVEL == 1
 const int switch_betrieb_pin = 19;
 const int switch_vcc_pin     = 22;     // <- Vcc 
-onst int switch_setup_pin   = 21;
+const int switch_setup_pin   = 21;
+const int vext_ctrl_pin      = 21;     // Vext control pin            
+
 #else // HARDWARE_LEVEL == 2
 const int switch_betrieb_pin = 23;
 const int switch_vcc_pin     = 19;     // <- Vcc 
