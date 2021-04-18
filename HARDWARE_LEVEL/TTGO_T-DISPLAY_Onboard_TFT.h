@@ -26,7 +26,7 @@ const int servo_pin = 22;
 const int hx711_sck_pin = 17;
 const int hx711_dt_pin  = 15;
 // Schalter Betriebsmodus
-const int switch_betrieb_pin = 36;  //TODO MKO1640: Change This Pin. It give trouble by uploading if switch is on.
+const int switch_betrieb_pin = 36;  
 const int switch_setup_pin   = 33;
 const int switch_vcc_pin     = -1;     // <- Vcc auf -1 wenn nicht benötigt
 // Buzzer
