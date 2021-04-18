@@ -1837,9 +1837,10 @@ void processAutomatik(void)
     progressbar = constrain(progressbar,0,128);
 
     
-    screen_zeigen();
+    
     drawBox  (0, 50, progressbar, 14,TFT_WHITE );
     drawFrame(0, 50, 128, 14,TFT_WHITE);
+    screen_zeigen();
   }
   else
   {
@@ -2314,7 +2315,7 @@ void clearScreen(){
 }
 void drawLine(int x0,int y0, int x1, int y1, uint32_t color){
   #ifdef use_TFT
-  tft.drawLine(x0+OffsetX,y0+OffsetY,x1+OffsetX,y1+OffsetY,color);
+  spr.drawLine(x0,y0,x1,y1,color);
   #else
   u8g2.drawLine(x0,y0,x1,x0);
   #endif
@@ -2323,20 +2324,20 @@ void screen_zeigen(void) {
 #ifdef use_TFT
    spr.pushSprite(OffsetX, OffsetY);
 #elif
-   u8g2.sendBuffer();
+   u8g2.sendBuffer(OffsetX, OffsetY);
 #endif  
 }
 void drawFrame(int x,int y, int w, int h, uint32_t color){
   #ifdef use_TFT
-  tft.drawRect(x+OffsetX,y+OffsetY,w,h,color);
+  spr.drawRect(x,y,w,h,color);
   #else
   u8g2.drawFrame(0, 50, 128, 14,);
   #endif
 }
 void drawBox(int x,int y, int w, int h, uint32_t color){
   #ifdef use_TFT
-  tft.fillRect (x+OffsetX,y+OffsetY,w,h,color);
+  spr.fillRect (x,y,w,h,color);
   #else
-  u8g2.drawBox(x+OffsetX, y+OffsetY, x1, y1);
+  u8g2.drawBox(x, y, x1, y1);
   #endif
 }
