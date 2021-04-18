@@ -93,7 +93,7 @@
 //
 // Hier den Code auf die verwendete Hardware einstellen
 //
-#define HARDWARE_LEVEL 5        // 1 = originales Layout mit Schalter auf Pin 19/22/21
+//#define HARDWARE_LEVEL 5        // 1 = originales Layout mit Schalter auf Pin 19/22/21
                                 // 2 = Layout für V2 mit Schalter auf Pin 23/19/22
                                 // 3 = ESP32 DEVKit V2 AZ-Delivery
                                 // 4 = ESP32 DEVKitC 240x320 SPI TFT
@@ -119,7 +119,7 @@
 //
 // Ab hier nur verstellen wenn Du genau weisst, was Du tust!
 //
-#define isDebug 0             // serielle debug-Ausgabe aktivieren. Mit >3 wird jeder Messdurchlauf ausgegeben
+//#define isDebug 0             // serielle debug-Ausgabe aktivieren. Mit >3 wird jeder Messdurchlauf ausgegeben
                                 // ACHTUNG: zu viel Serieller Output kann einen ISR-Watchdog Reset auslösen!
 //#define POTISCALE             // Poti simuliert eine Wägezelle, nur für Testbetrieb!
 
@@ -153,6 +153,7 @@
 #define BUZZER_LONG    2
 #define BUZZER_SUCCESS 3
 #define BUZZER_ERROR   4
+
 
 // ** Definition der pins 
 
@@ -1506,13 +1507,14 @@ void processSetupScroll(void) {
   u8g2.print(menuepunkte[unterpos]);
 
   //Mittelzeile
-  drawLine(1, 20, 120, 20,TFT_WHITE);
+  
   u8g2.setFont(u8g2_font_courB12_tf);
   u8g2.setCursor(6, 38);   
   u8g2.print(menuepunkte[menuitem]);
-  drawLine(1, 47, 120, 47,TFT_WHITE);
-
   screen_zeigen();
+  drawLine(1, 20, 120, 20,TFT_WHITE);
+  drawLine(1, 47, 128, 47,TFT_WHITE);
+
   int lastpos = menuitem;
   
     if ( digitalRead(SELECT_SW) == SELECT_PEGEL ) {
@@ -1834,10 +1836,10 @@ void processAutomatik(void)
     int progressbar = 128.0*((float)gewicht/(float)zielgewicht);
     progressbar = constrain(progressbar,0,128);
 
-    //drawFrame(0, 50, 128, 14,TFT_WHITE);
+    
     screen_zeigen();
     drawBox  (0, 50, progressbar, 14,TFT_WHITE );
-    
+    drawFrame(0, 50, 128, 14,TFT_WHITE);
   }
   else
   {
@@ -1935,7 +1937,6 @@ void processHandbetrieb(void)
   u8g2.print(ausgabe);
 
   screen_zeigen();
-//  u8g2.updateDisplayArea(4,2,12,6);  // schneller aber ungenaue Displayausgabe.
   dauer = millis() - scaletime;
 }
 
@@ -1960,6 +1961,11 @@ void setup()
   }
 #ifdef isDebug
     Serial.println("Hanimandl Start");
+    Serial.print("Debuglevel = ");   Serial.println(isDebug);
+    Serial.print("Hardwarelevel = ");   Serial.println(HARDWARE_LEVEL);
+    #ifdef use_TFT
+    Serial.println("TFT_Biblioteken geladen");
+    #endif
 #endif
   
   // Rotary
@@ -2014,19 +2020,19 @@ void setup()
 
 // Boot Screen
 #ifdef use_TFT
-  tft.init();  // initialize
-  u8g2.begin(spr);                     // connect u8g2 procedures to TFT_eSPI
+tft.init();  // initialize
+tft.setRotation(RotateScreen);
+tft.fillScreen(TFT_BLACK);
+tft.setTextDatum(BL_DATUM);
 
-  tft.setRotation(RotateScreen);
-  spr.createSprite(240, 320);
-  tft.fillScreen(TFT_BLACK);
-  spr.setColorDepth(8); // Optionally set depth to 8 to halve RAM use
-  spr.createSprite(TFT_WIDTH, TFT_HEIGHT);
-  spr.setTextDatum(BL_DATUM);
-  u8g2.setFontMode(0);                 // use u8g2 none transparent mode
-  u8g2.setFontDirection(0);            // left to right (this is default)
-  u8g2.setForegroundColor(TFT_WHITE);  // apply color
+spr.setColorDepth(8);
+spr.createSprite(TFT_WIDTH, TFT_HEIGHT);
+spr.setTextDatum(BL_DATUM);
 
+u8g2.begin(spr);                     // connect u8g2 procedures to TFT_eSPI
+u8g2.setFontMode(0);                 // use u8g2 none transparent mode
+u8g2.setFontDirection(0);            // left to right (this is default)
+u8g2.setForegroundColor(TFT_WHITE);  // apply color
 #else
   u8g2.setBusClock(800000);   // experimental
   u8g2.begin();
@@ -2308,29 +2314,29 @@ void clearScreen(){
 }
 void drawLine(int x0,int y0, int x1, int y1, uint32_t color){
   #ifdef use_TFT
-  tft.drawLine(x0,y0,x1,y1,color);
+  tft.drawLine(x0+OffsetX,y0+OffsetY,x1+OffsetX,y1+OffsetY,color);
   #else
   u8g2.drawLine(x0,y0,x1,x0);
   #endif
 }
 void screen_zeigen(void) {
 #ifdef use_TFT
-   spr.pushSprite(0, 0);
+   spr.pushSprite(OffsetX, OffsetY);
 #elif
    u8g2.sendBuffer();
 #endif  
 }
 void drawFrame(int x,int y, int w, int h, uint32_t color){
   #ifdef use_TFT
-  tft.drawRect(x,y,w,h,color);
+  tft.drawRect(x+OffsetX,y+OffsetY,w,h,color);
   #else
   u8g2.drawFrame(0, 50, 128, 14,);
   #endif
 }
-void drawBox(int x0,int y0, int x1, int y1, uint32_t color){
+void drawBox(int x,int y, int w, int h, uint32_t color){
   #ifdef use_TFT
-  tft.fillRect (x0,y0,x1,y1,color);
+  tft.fillRect (x+OffsetX,y+OffsetY,w,h,color);
   #else
-  u8g2.drawBox(0, 50, 128, 14,);
+  u8g2.drawBox(x+OffsetX, y+OffsetY, x1, y1);
   #endif
 }

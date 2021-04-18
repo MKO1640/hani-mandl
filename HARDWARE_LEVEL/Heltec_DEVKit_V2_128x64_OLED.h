@@ -2,10 +2,10 @@
             Setup von Freddy3108 zur verwendung eines zusätzlichem Größeren I2C Displays
             Infos zum Setup gibt es hier:
             https://github.com/Freddy3108/HaniMandl-3.0/tree/c5d2e61d9c17aef4c3fafdd942442437090cf66d/HARDWARE
-        
+            */
             // OLED fuer ESP32 outboard OLED 
             U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 22, /* data=*/ 21, /* reset=*/ 16);
-            #define Logo2
+            #define Logo1
             // Rotary Encoder
             const int outputA  = 33;
             const int outputB  = 26;
