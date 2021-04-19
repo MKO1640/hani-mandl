@@ -34,4 +34,5 @@
             
             // Buzzer - aktiver Piezo
             static int buzzer_pin = 25;
-            int LED_pin = 2;
+            const int LED_pin = 2;
+            const int LED_BUILTIN = -1;

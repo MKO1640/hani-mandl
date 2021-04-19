@@ -1,8 +1,10 @@
-
+#include <U8g2lib.h>
 // OLED fuer Heltec WiFi Kit 32 (ESP32 onboard OLED) 
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);
 //U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ 16, /* clock=*/ 15, /* data=*/ 4);   // HW I2C crashed den Code
 #define Logo1
+#define OffsetX
+#define OffsetY
 // Rotary Encoder
 const int outputA  = 33;
 const int outputB  = 26;
@@ -40,4 +42,5 @@ const int hx711_dt_pin  = 5;
             
 // Buzzer - aktiver Piezo
 static int buzzer_pin = 25;
-int LED_pin = -1;
+const int LED_pin = -1;
+const int LED_BUILTIN = -1;

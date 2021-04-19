@@ -179,7 +179,9 @@ TFT_eSPI tft = TFT_eSPI();           // TFT object
 TFT_eSprite spr = TFT_eSprite(&tft); // Sprite object
 U8g2_for_TFT_eSPI u8g2;               // U8g2 font instanz
 #else
-#include <U8g2lib.h>      // aus dem Arduino-Bibliotheksverwalter
+// colors we will use in use_TFT Mode must be define here
+#define TFT_WHITE 0
+
 #endif
 
 
@@ -1511,10 +1513,9 @@ void processSetupScroll(void) {
   u8g2.setFont(u8g2_font_courB12_tf);
   u8g2.setCursor(6, 38);   
   u8g2.print(menuepunkte[menuitem]);
-  screen_zeigen();
   drawLine(1, 20, 120, 20,TFT_WHITE);
   drawLine(1, 47, 128, 47,TFT_WHITE);
-
+  screen_zeigen();
   int lastpos = menuitem;
   
     if ( digitalRead(SELECT_SW) == SELECT_PEGEL ) {
@@ -1810,8 +1811,8 @@ void processAutomatik(void)
   }
   u8g2.drawGlyph(0, 40, (auto_aktiv==1)?0x45:0x44 );
   u8g2.setForegroundColor(TFT_WHITE);
-    
-  #elif
+
+  #else
   u8g2.drawGlyph(0, 40, (auto_aktiv==1)?0x45:0x44 );
   #endif
 
@@ -1948,14 +1949,9 @@ void setup()
   pinMode(button_stop_pin, INPUT_PULLDOWN);
   pinMode(switch_betrieb_pin, INPUT_PULLDOWN);
   pinMode(switch_setup_pin, INPUT_PULLDOWN);
-#if HARDWARE_LEVEL == 2
   pinMode(vext_ctrl_pin, INPUT_PULLDOWN);
-#endif
-#if (HARDWARE_LEVEL == 1 || HARDWARE_LEVEL == 2)
   pinMode(LED_BUILTIN, OUTPUT);
-#else // Hardwarelevel 3
   pinMode(LED_pin, OUTPUT);
-#endif
 
   Serial.begin(115200);
   while (!Serial) {
@@ -2239,10 +2235,6 @@ void print_logo() {
 
           #ifdef use_TFT
           spr.drawXBitmap(0, 0,logo_biene1,80,64,TFT_YELLOW);
-          #else
-          clearScreen();
-          u8g2.drawXBM(0,0,80,64,logo_biene1);
-          #endif
           u8g2.setFont(u8g2_font_courB14_tf);
           u8g2.setForegroundColor(TFT_BROWN);
           u8g2.setCursor(85, 27);    u8g2.print("HANI");
@@ -2251,6 +2243,15 @@ void print_logo() {
           u8g2.setFont(u8g2_font_courB08_tf);
           u8g2.setCursor(85, 64);    u8g2.print("v.0.2.9");
           u8g2.setForegroundColor(TFT_WHITE);
+          #else
+          clearScreen();
+          u8g2.drawXBM(0,0,80,64,logo_biene1);
+          u8g2.setFont(u8g2_font_courB14_tf);
+          u8g2.setCursor(85, 27);    u8g2.print("HANI");
+          u8g2.setCursor(75, 43);    u8g2.print("MANDL");
+          u8g2.setFont(u8g2_font_courB08_tf);
+          u8g2.setCursor(85, 64);    u8g2.print("v.0.2.9");
+          #endif
           screen_zeigen();
 
 }
@@ -2323,21 +2324,21 @@ void drawLine(int x0,int y0, int x1, int y1, uint32_t color){
 void screen_zeigen(void) {
 #ifdef use_TFT
    spr.pushSprite(OffsetX, OffsetY);
-#elif
-   u8g2.sendBuffer(OffsetX, OffsetY);
+#else
+   u8g2.sendBuffer();
 #endif  
 }
 void drawFrame(int x,int y, int w, int h, uint32_t color){
   #ifdef use_TFT
   spr.drawRect(x,y,w,h,color);
   #else
-  u8g2.drawFrame(0, 50, 128, 14,);
+  u8g2.drawFrame(0, 50, 128, 14);
   #endif
 }
 void drawBox(int x,int y, int w, int h, uint32_t color){
   #ifdef use_TFT
   spr.fillRect (x,y,w,h,color);
   #else
-  u8g2.drawBox(x, y, x1, y1);
+  u8g2.drawBox(x, y, w, h);
   #endif
 }

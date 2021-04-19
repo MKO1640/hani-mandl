@@ -33,4 +33,4 @@ const int switch_setup_pin   = 14;
 const int buzzer_pin = 33;
 //LED
 const int LED_pin = -1;
-
+const int LED_BUILTIN = -1;

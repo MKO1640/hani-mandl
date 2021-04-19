@@ -33,3 +33,4 @@ const int switch_vcc_pin     = -1;     // <- Vcc auf -1 wenn nicht benötigt
 const int buzzer_pin = 33;
 // LED
 const int LED_pin = -1;  //<- Vcc auf -1 wenn nicht benötig
+const int LED_BUILTIN=-1;
