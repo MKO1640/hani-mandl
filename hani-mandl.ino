@@ -92,12 +92,13 @@
 
 //
 // Hier den Code auf die verwendete Hardware einstellen
-//
-//#define HARDWARE_LEVEL 5        // 1 = originales Layout mit Schalter auf Pin 19/22/21
+
+//#define HARDWARE_LEVEL 4        // 1 = originales Layout mit Schalter auf Pin 19/22/21
                                 // 2 = Layout für V2 mit Schalter auf Pin 23/19/22
                                 // 3 = ESP32 DEVKit V2 AZ-Delivery
                                 // 4 = ESP32 DEVKitC 240x320 SPI TFT
                                 // 5 = TTGO_T-DISPLAY_Onboard TFT
+
                                 // In Voreinstellung https://dl.espressif.com/dl/package_esp32_index.json mit eintragen
                                 // Bei Werkzeuge -> Board_> ESP32 Arduino->ESP32 Module auswählen
                                 // Beim flashen (übetragen) die Boottaste gedrückt halten und anschließend Rest drücken.
@@ -174,6 +175,7 @@
 #include <SPI.h>
 #include <TFT_eSPI.h>
 #include "U8g2_for_TFT_eSPI.h"
+//#include "Free_Fonts.h"
 extern TFT_eSPI tft;
 TFT_eSPI tft = TFT_eSPI();           // TFT object
 TFT_eSprite spr = TFT_eSprite(&tft); // Sprite object
@@ -2023,7 +2025,7 @@ tft.fillScreen(TFT_BLACK);
 tft.setTextDatum(BL_DATUM);
 
 spr.setColorDepth(8);
-spr.createSprite(TFT_WIDTH, TFT_HEIGHT);
+spr.createSprite(TFT_HEIGHT, TFT_WIDTH); //toDo: TFT_HIGHT und TFT_WIDTH machen bei useTFT sicher probleme fals RotateScreen  nicht auf 1 steht.
 spr.setTextDatum(BL_DATUM);
 
 u8g2.begin(spr);                     // connect u8g2 procedures to TFT_eSPI
@@ -2043,11 +2045,7 @@ u8g2.setForegroundColor(TFT_WHITE);  // apply color
 // Setup der Waage, Skalierungsfaktor setzen
   if (waage_vorhanden ==1 ) {                         // Waage angeschlossen?
     if ( faktor == 0 ) {                              // Vorhanden aber nicht kalibriert
-      clearScreen();
-      u8g2.setFont(u8g2_font_courB18_tf);
-      u8g2.setCursor( 24, 24); u8g2.print("Nicht");
-      u8g2.setCursor( 10, 56); u8g2.print("kalibr.");
-      screen_zeigen();
+      viewMessageFull("Nicht","kalibr.");
 #ifdef isDebug
       Serial.println("Waage nicht kalibriert!");
 #endif
@@ -2060,11 +2058,7 @@ u8g2.setForegroundColor(TFT_WHITE);  // apply color
 #endif
     }
   } else {                                            // Keine Waage angeschlossen
-    clearScreen();
-    u8g2.setFont(u8g2_font_courB24_tf);
-    u8g2.setCursor( 14, 24); u8g2.print("Keine");
-    u8g2.setCursor( 6, 56);  u8g2.print("Waage!");
-    screen_zeigen();
+    viewMessageFull("Keine","Waage!");
     buzzer(BUZZER_ERROR);
 #ifdef isDebug
     Serial.println("Keine Waage!");
@@ -2084,11 +2078,7 @@ u8g2.setForegroundColor(TFT_WHITE);  // apply color
       Serial.println(gewicht);
 #endif
     } else if (faktor != 0) {
-      clearScreen();
-      u8g2.setFont(u8g2_font_courB18_tf);
-      u8g2.setCursor( 24, 24); u8g2.print("Waage");
-      u8g2.setCursor( 10, 56); u8g2.print("leeren!");
-      screen_zeigen();
+      viewMessageFull("Waage","leeren!");
 #ifdef isDebug
         Serial.print("Gewicht auf der Waage: ");
         Serial.println(gewicht);
@@ -2341,4 +2331,35 @@ void drawBox(int x,int y, int w, int h, uint32_t color){
   #else
   u8g2.drawBox(x, y, w, h);
   #endif
+}
+void PrintCenter(int x,int y,int w,const char* text){
+  int center=w/2-u8g2.getUTF8Width(text)/2;
+  u8g2.setCursor( x+center, y); 
+  u8g2.print(text);
+}
+void PrintRight(int x,int y,int w,const char* text){
+  int RightPos=w-u8g2.getUTF8Width(text);
+  u8g2.setCursor( RightPos+x, y); 
+  u8g2.print(text);
+}
+
+
+
+void viewMessageFull (const char* Zeile1, const char* Zeile2){
+  
+  //todo : Funtion ist aktuell eher Holzfällermetode, geht sicher einiges schöner.
+  // Offset durch diese Funktion auch nicht mehr möglich evtl.noch mit einbauen z.B."PrintCenter( 0, 2*yteil,TFT_HEIGHT-(2xOffsetX),Zeile1);""
+  clearScreen();
+  #ifdef use_TFT
+  u8g2.setFont(Big_Front);
+  int yteil = TFT_WIDTH/5;    
+  PrintCenter( 0, 2*yteil,TFT_HEIGHT,Zeile1);
+  PrintCenter( 0, 3*yteil,TFT_HEIGHT,Zeile2);
+  u8g2.setFont(u8g2_font_courB10_tf);
+  #else
+  u8g2.setFont(u8g2_font_courB18_tf);
+  u8g2.setCursor( 24, 24); u8g2.print(Zeile1);
+  u8g2.setCursor( 10, 56); u8g2.print(Zeile2);
+  #endif
+  screen_zeigen();
 }
