@@ -35,3 +35,4 @@ const int LED_pin = -1;
 const int LED_BUILTIN = -1;
 
 #define Big_Front u8g2_font_courB24_tf
+#define FrontMenue u8g2_font_courB24_tf //orginal u8g2_font_courB10_tf

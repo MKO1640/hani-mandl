@@ -37,3 +37,4 @@ const int LED_BUILTIN=-1;
 
 
 #define Big_Front u8g2_font_courB18_tf //todo: switch between frontsize automatic with screen size
+#define FrontMenue u8g2_font_courB14_tf //orginal u8g2_font_courB10_tf

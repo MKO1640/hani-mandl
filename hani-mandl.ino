@@ -536,7 +536,9 @@ void setupTripCounter(void) { //Kud
   int j;
   i = 1;
   float TripAbfuellgewicht = 0;
-
+  u8g2.setFont(FrontMenue);
+  int zeile = TFT_WIDTH/6;
+  int spalte = u8g2.getUTF8Width("A");  i = 1;
   while (i > 0) { //Erster Screen: Anzahl pro Glasgröße
     j = 0;
     if ((digitalRead(button_stop_pin)) == HIGH)
@@ -547,24 +549,23 @@ void setupTripCounter(void) { //Kud
       i = 0;
       delay(250);
     }
-
-    u8g2.setFont(u8g2_font_courB10_tf);
     clearScreen();
     while ( j < 5 ) {
-      u8g2.setCursor(1, 10 + (j * 13));
-      sprintf(ausgabe, "%4dg%3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]);
+      u8g2.setCursor(0, zeile + (j * zeile));
+      sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]);
       u8g2.print(ausgabe);
-      u8g2.setCursor(50, 10 + (j * 13));
-      sprintf(ausgabe, "%5d St.", glaeser[j].TripCount);
+      u8g2.setCursor(spalte*8, zeile + (j * zeile));
+      sprintf(ausgabe, "%5dSt.", glaeser[j].TripCount);
       u8g2.print(ausgabe);
       j++;
     }
     clearScreen();
     delay(100);
   }
-
+//**************************************************************************
+//              Zweiter Screen: Gewicht pro Glasgröße
   i = 1;
-  while (i > 0) { //Zweiter Screen: Gewicht pro Glasgröße
+  while (i > 0) { 
     j = 0;
     if ((digitalRead(button_stop_pin)) == HIGH)
       return;
@@ -574,14 +575,12 @@ void setupTripCounter(void) { //Kud
       i = 0;
       delay(250);
     }
-
-    u8g2.setFont(u8g2_font_courB10_tf);
     clearScreen();
     while ( j < 5  ) {
-      u8g2.setCursor(1, 10 + (j * 13));
-      sprintf(ausgabe, "%4dg%3s", glaeser[j].Gewicht,GlasTypArray[glaeser[j].GlasTyp]);
+      u8g2.setCursor(0, zeile + (j * zeile));
+      sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht,GlasTypArray[glaeser[j].GlasTyp]);
       u8g2.print(ausgabe);
-      u8g2.setCursor(65, 10 + (j * 13));
+      u8g2.setCursor(spalte*8, zeile + (j * zeile));
       //      Serial.println(glaeser[j].Gewicht);
       //      Serial.print("\t");
       //      Serial.print(glaeser[j].TripCount);
@@ -615,11 +614,9 @@ void setupTripCounter(void) { //Kud
       j++;
     }
     clearScreen();
-    u8g2.setFont(u8g2_font_courB14_tf);
-    u8g2.setCursor(5, 15);
+    u8g2.setCursor(0, zeile);
     u8g2.print("Summe Trip:");
-    u8g2.setFont(u8g2_font_courB18_tf);
-    u8g2.setCursor(10, 50);
+    u8g2.setCursor(spalte*3, 3*zeile);
     sprintf(ausgabe, "%5.1fkg", TripAbfuellgewicht);
     u8g2.print(ausgabe);
     screen_zeigen();
@@ -636,17 +633,16 @@ void setupTripCounter(void) { //Kud
         return;
 
       pos = getRotariesValue(SW_MENU);
-      u8g2.setFont(u8g2_font_courB10_tf);
       clearScreen();
-      u8g2.setCursor(10, 12);    u8g2.print("Reset");
-      u8g2.setCursor(10, 28);    u8g2.print("Abbrechen");
+      u8g2.setCursor(spalte, zeile);    u8g2.print("Reset");
+      u8g2.setCursor(spalte, 2*zeile);    u8g2.print("Abbrechen");
 
-      u8g2.setCursor(0, 12 + ((pos) * 16));
+      u8g2.setCursor(0, zeile + ((pos) * zeile));
       u8g2.print("*");
       screen_zeigen();
 
       if ((digitalRead(SELECT_SW)) == SELECT_PEGEL) {
-        u8g2.setCursor(105, 12 + ((pos) * 16));
+        u8g2.setCursor(spalte*11, zeile + ((pos) * zeile));
         u8g2.print("OK");
         screen_zeigen();
         if ( pos == 0) {
@@ -668,7 +664,9 @@ void setupCounter(void) { //Kud
   int j;
   i = 1;
   float Abfuellgewicht = 0;
-
+  u8g2.setFont(FrontMenue);
+  int zeile = TFT_WIDTH/6;
+  int spalte = u8g2.getUTF8Width("A");  i = 1;
   while (i > 0) { //Erster Screen: Anzahl pro Glasgröße
     j = 0;
     if ((digitalRead(button_stop_pin)) == HIGH)
@@ -679,15 +677,13 @@ void setupCounter(void) { //Kud
       i = 0;
       delay(250);
     }
-
-    u8g2.setFont(u8g2_font_courB10_tf);
     clearScreen();
     while ( j < 5 ) {
-      u8g2.setCursor(1, 10 + (j * 13));
-      sprintf(ausgabe, "%4dg%3s", glaeser[j].Gewicht,GlasTypArray[glaeser[j].GlasTyp]);
+      u8g2.setCursor(0, zeile + (j * zeile));
+      sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht,GlasTypArray[glaeser[j].GlasTyp]);
       u8g2.print(ausgabe);
-      u8g2.setCursor(50, 10 + (j * 13));
-      sprintf(ausgabe, "%5d St.", glaeser[j].Count);
+      u8g2.setCursor(spalte*7, zeile + (j * zeile));
+      sprintf(ausgabe, "%5dSt.", glaeser[j].Count);
       u8g2.print(ausgabe);
       j++;
     }
@@ -706,14 +702,12 @@ void setupCounter(void) { //Kud
       i = 0;
       delay(250);
     }
-
-    u8g2.setFont(u8g2_font_courB10_tf);
     clearScreen();
     while ( j < 5) {
-      u8g2.setCursor(1, 10 + (j * 13));
-      sprintf(ausgabe, "%4dg%3s", glaeser[j].Gewicht,GlasTypArray[glaeser[j].GlasTyp]);
+      u8g2.setCursor(0, zeile + (j * zeile));
+      sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht,GlasTypArray[glaeser[j].GlasTyp]);
       u8g2.print(ausgabe);
-      u8g2.setCursor(65, 10 + (j * 13));
+      u8g2.setCursor(spalte*8, zeile + (j * zeile));
       //      Serial.println(glaeser[j].Gewicht);
       //      Serial.print("\t");
       //      Serial.print(glaeser[j].Count);
@@ -747,11 +741,9 @@ void setupCounter(void) { //Kud
       j++;
     }
     clearScreen();
-    u8g2.setFont(u8g2_font_courB14_tf);
-    u8g2.setCursor(1, 15);
+    u8g2.setCursor(spalte, zeile);
     u8g2.print("Summe:");
-    u8g2.setFont(u8g2_font_courB18_tf);
-    u8g2.setCursor(10, 50);
+    u8g2.setCursor(spalte, 3*zeile);
     sprintf(ausgabe, "%5.1fkg", Abfuellgewicht);
     u8g2.print(ausgabe);
     screen_zeigen();
@@ -768,17 +760,17 @@ void setupCounter(void) { //Kud
         return;
 
       pos = getRotariesValue(SW_MENU);
-      u8g2.setFont(u8g2_font_courB10_tf);
       clearScreen();
-      u8g2.setCursor(10, 12);    u8g2.print("Reset");
-      u8g2.setCursor(10, 28);    u8g2.print("Abbrechen");
+      u8g2.setCursor(spalte,   zeile);    u8g2.print("Zähler Summe:");
+      u8g2.setCursor(spalte, 2*zeile);    u8g2.print("Reset?");
+      u8g2.setCursor(spalte, 3*zeile);    u8g2.print("Abbrechen");
 
-      u8g2.setCursor(0, 12 + ((pos) * 16));
+      u8g2.setCursor(0, (2*zeile) + ((pos) * zeile));
       u8g2.print("*");
       screen_zeigen();
 
       if ((digitalRead(SELECT_SW)) == SELECT_PEGEL) {
-        u8g2.setCursor(105, 12 + ((pos) * 16));
+        u8g2.setCursor(spalte*9, (2*zeile) + ((pos) * zeile));
         u8g2.print("OK");
         screen_zeigen();
         if ( pos == 0) {
@@ -798,10 +790,12 @@ void setupCounter(void) { //Kud
   }
 }
 
-
 void setupTara(void) {
     int j;
     tara = 0;
+    u8g2.setFont(FrontMenue);
+    int zeile = TFT_WIDTH/6;
+    int spalte = u8g2.getUTF8Width("A");  i = 1;
 
     initRotaries( SW_MENU, fmenge_index, 0, 4, -1 );   // Set Encoder to Menu Mode, four Selections, inverted count
       
@@ -818,19 +812,18 @@ void setupTara(void) {
         i++;
       }
       
-      u8g2.setFont(u8g2_font_courB10_tf);
       clearScreen();
 
       j = 0;
       while( j < 5  ) {
-        u8g2.setCursor(3, 10+(j*13));
+        u8g2.setCursor(spalte, zeile+(j*zeile));
         if ( glaeser[j].Gewicht < 1000 ) {
-          sprintf(ausgabe, " %3d-%3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]); 
+          sprintf(ausgabe, "%3d-%3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]); 
         } else {
-          sprintf(ausgabe, " %3s-%3s", "1kg", GlasTypArray[glaeser[j].GlasTyp]); 
+          sprintf(ausgabe, "%3s-%3s", "1kg", GlasTypArray[glaeser[j].GlasTyp]); 
         }
         u8g2.print(ausgabe);
-        u8g2.setCursor(75, 10+(j*13));
+        u8g2.setCursor(spalte*8, zeile+(j*zeile));
         if ( glaeser[j].Tara > 0 ) { 
           sprintf(ausgabe, " %4dg", glaeser[j].Tara); 
           u8g2.print(ausgabe);
@@ -839,23 +832,23 @@ void setupTara(void) {
         }
         j++;
       }
-      u8g2.setCursor(0, 10+(getRotariesValue(SW_MENU)*13) );    
+      u8g2.setCursor(0, zeile+(getRotariesValue(SW_MENU)*zeile) );    
       u8g2.print("*");
       screen_zeigen();
     }
     delay(2000);
 }
 
-
 void setupCalibration(void) {
   float gewicht_raw;
-    
+  u8g2.setFont(FrontMenue);
+  int zeile = TFT_WIDTH/6;
+  int spalte = u8g2.getUTF8Width("A");  i = 1;
   clearScreen();
-  u8g2.setFont(u8g2_font_courB12_tf);
-  u8g2.setCursor(0, 12);    u8g2.print("Bitte Waage");
-  u8g2.setCursor(0, 28);    u8g2.print("leeren");
-  u8g2.setCursor(0, 44);    u8g2.print("und mit OK");
-  u8g2.setCursor(0, 60);    u8g2.print("bestätigen");
+  u8g2.setCursor(0, zeile);    u8g2.print("Bitte Waage");
+  u8g2.setCursor(0, 2*zeile);    u8g2.print("leeren");
+  u8g2.setCursor(0, 3*zeile);    u8g2.print("und mit OK");
+  u8g2.setCursor(0, 4*zeile);    u8g2.print("bestätigen");
   screen_zeigen();
     
   i = 1;
@@ -870,8 +863,6 @@ void setupCalibration(void) {
         i = 0;
     }
   }
-    
-  u8g2.setFont(u8g2_font_courB12_tf);
   initRotaries( SW_MENU, kali_gewicht, 100, 9999, 1 ); 
   i = 1;
   while (i > 0) {
@@ -882,7 +873,7 @@ void setupCalibration(void) {
   
     int blinktime = (millis()/10) % 5;
     clearScreen();
-    u8g2.setCursor(0, 12);u8g2.print("Bitte "); 
+    u8g2.setCursor(0, zeile);u8g2.print("Bitte "); 
 
     if (blinktime < 3) {
       sprintf(ausgabe, "%dg", kali_gewicht);
@@ -890,19 +881,19 @@ void setupCalibration(void) {
       sprintf(ausgabe, "     ");
     }
     u8g2.print(ausgabe);
-    u8g2.setCursor(0, 28);    u8g2.print("aufstellen");
-    u8g2.setCursor(0, 44);    u8g2.print("und mit OK");
-    u8g2.setCursor(0, 60);    u8g2.print("bestätigen");
+    u8g2.setCursor(0, 2*zeile);    u8g2.print("aufstellen");
+    u8g2.setCursor(0, 3*zeile);    u8g2.print("und mit OK");
+    u8g2.setCursor(0, 4*zeile);    u8g2.print("bestätigen");
     screen_zeigen();
       
     if ((digitalRead(SELECT_SW)) == SELECT_PEGEL) {
       clearScreen();
-      u8g2.setCursor(0, 12);u8g2.print("Bitte "); 
+      u8g2.setCursor(0, 1*zeile);    u8g2.print("Die Waage");
+      u8g2.setCursor(0, 2*zeile);    u8g2.print("wurde auf");
+      u8g2.setCursor(0, 3*zeile);u8g2.print(" "); 
       sprintf(ausgabe, "%dg", kali_gewicht);
       u8g2.print(ausgabe);
-      u8g2.setCursor(0, 28);    u8g2.print("aufstellen");
-      u8g2.setCursor(0, 44);    u8g2.print("und mit OK");
-      u8g2.setCursor(0, 60);    u8g2.print("bestätigen");
+      u8g2.setCursor(0, 4*zeile);    u8g2.print("kalibriert.");
       screen_zeigen();
       gewicht_raw  = scale.get_units(10);
       faktor       = gewicht_raw / kali_gewicht;
@@ -928,6 +919,9 @@ void setupKorrektur(void) {
     int korrektur_alt = korrektur;
 
     rotary_select = SW_KORREKTUR;
+    u8g2.setFont(FrontMenue);
+    int zeile = TFT_WIDTH/6;
+    int spalte = u8g2.getUTF8Width("A");  i = 1;
 
     i = 1;
     while (i > 0) {
@@ -939,22 +933,32 @@ void setupKorrektur(void) {
       }
       
       korrektur = getRotariesValue(SW_KORREKTUR);
-      u8g2.setFont(u8g2_font_courB12_tf);
       clearScreen();
-      u8g2.setCursor(10, 12);
+      u8g2.setCursor(spalte, zeile);
       u8g2.print("Korrektur");
-      u8g2.setCursor(40, 28);
+      
+      if (korrektur>9){
+        u8g2.setCursor(spalte*4, 2*zeile);     // A.P.
+      }
+      else{
+        u8g2.setCursor(spalte*5, 2*zeile);
+      }     // A.P.
       u8g2.print(korrektur);
 
-      u8g2.setCursor(10, 48);     // A.P.
+      u8g2.setCursor(spalte, 3*zeile);     // A.P.
       u8g2.print("alter Wert");   // A.P.
-      u8g2.setCursor(40, 64);     // A.P.
+      if (korrektur_alt>9){
+        u8g2.setCursor(spalte*4, 4*zeile);     // A.P.
+      }
+      else{
+        u8g2.setCursor(spalte*5, 4*zeile);
+        }     // A.P.
       u8g2.print(korrektur_alt);  // A.P.
       
       screen_zeigen();
       
       if ((digitalRead(SELECT_SW)) == SELECT_PEGEL) {
-        u8g2.setCursor(100, 28);
+        u8g2.setCursor(spalte*11, 2*zeile);
         u8g2.print("OK");
         screen_zeigen();
         delay(1000);
@@ -974,8 +978,9 @@ void setupServoWinkel(void) {
   bool servo_live = false;
   
   initRotaries(SW_MENU, 0, 0, 4, -1);
-
-  u8g2.setFont(u8g2_font_courB10_tf);
+  u8g2.setFont(FrontMenue);
+  int zeile = TFT_WIDTH/6;
+  int spalte = u8g2.getUTF8Width("A");  i = 1;
   i = 1;
   while (i > 0) {
     if ((digitalRead(button_stop_pin)) == HIGH) {
@@ -1005,24 +1010,24 @@ void setupServoWinkel(void) {
     }
 
     clearScreen();
-    u8g2.setCursor(10, 23); sprintf(ausgabe,"Minimum   %3d", winkel_min);  u8g2.print(ausgabe);
-    u8g2.setCursor(10, 36); sprintf(ausgabe,"Feindos.  %3d", winkel_fein); u8g2.print(ausgabe);
-    u8g2.setCursor(10, 49); sprintf(ausgabe,"Maximum   %3d", winkel_max);  u8g2.print(ausgabe);
-    u8g2.setCursor(10, 62); u8g2.print(     "Speichern");
+    u8g2.setCursor(spalte, 2*zeile); sprintf(ausgabe,"Minimum   %3d", winkel_min);  u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, 3*zeile); sprintf(ausgabe,"Feindos.  %3d", winkel_fein); u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, 4*zeile); sprintf(ausgabe,"Maximum   %3d", winkel_max);  u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, 5*zeile); u8g2.print(     "Speichern");
 
     if ( wert_aendern == false ) {
-       u8g2.setCursor(10, 10); sprintf(ausgabe,"Livesetup %3s", (servo_live==false?"aus":"ein")); u8g2.print(ausgabe);
-       u8g2.setCursor( 0, 10+(menuitem*13)); u8g2.print("*");
-    } else {
+       u8g2.setCursor(spalte, zeile); sprintf(ausgabe,"Livesetup %3s", (servo_live==false?"aus":"ein")); u8g2.print(ausgabe);
+       u8g2.setCursor( 0, zeile+(menuitem*zeile)); u8g2.print("*");
+    } 
+    else {
        if ( menuitem != 0 ) { 
-          u8g2.setCursor(10, 10); sprintf(ausgabe,"  vorher: %3d", wert_alt); u8g2.print(ausgabe);
-       } else {
-          u8g2.setCursor(10, 10); sprintf(ausgabe,"Livesetup %3s", (servo_live==false?"aus":"ein")); u8g2.print(ausgabe);
-       }   
-       u8g2.setFont(u8g2_font_open_iconic_arrow_1x_t);
-       u8g2.drawGlyph(0, 10+(menuitem*13), 0x42);
-       u8g2.setFont(u8g2_font_courB10_tf);     
-    }
+          u8g2.setCursor(spalte, zeile); sprintf(ausgabe,"  vorher: %3d", wert_alt); u8g2.print(ausgabe);
+        } 
+        else {
+          u8g2.setCursor(spalte, zeile); sprintf(ausgabe,"Livesetup %3s", (servo_live==false?"aus":"ein")); u8g2.print(ausgabe);
+        }
+        u8g2.setCursor( 0, zeile+(menuitem*zeile)); u8g2.print("-");   
+      }
     screen_zeigen();
 
     if ( (digitalRead(SELECT_SW) == SELECT_PEGEL) 
@@ -1068,7 +1073,7 @@ void setupServoWinkel(void) {
       }
 
       if ( (digitalRead(SELECT_SW) == SELECT_PEGEL) && (menuitem == 4) ) {
-        u8g2.setCursor(108, 10+(menuitem*13));
+        u8g2.setCursor(spalte*11, zeile+(menuitem*zeile));
         u8g2.print("OK");
         screen_zeigen();
         delay(1000);
@@ -1086,8 +1091,9 @@ void setupAutomatik(void) {
 
   initRotaries(SW_MENU, 0, 0, 3, -1);
 
-  u8g2.setFont(u8g2_font_courB10_tf);
-  i = 1;
+  u8g2.setFont(FrontMenue);
+  int zeile = TFT_WIDTH/6;
+  int spalte = u8g2.getUTF8Width("A");  i = 1;
   while (i > 0) {
     if ((digitalRead(button_stop_pin)) == HIGH) {
       autostart     = lastautostart;
@@ -1113,18 +1119,16 @@ void setupAutomatik(void) {
 
     // Menu
     clearScreen();
-    u8g2.setCursor(10, 10); sprintf(ausgabe,"Autostart %3s", (autostart==0?"aus":"ein"));     u8g2.print(ausgabe);
-    u8g2.setCursor(10, 23); sprintf(ausgabe,"Autokorr. %3s", (autokorrektur==0?"aus":"ein")); u8g2.print(ausgabe);
-    u8g2.setCursor(10, 36); sprintf(ausgabe,"-> Kulanz %2dg", kulanz_gr);                     u8g2.print(ausgabe);
-    u8g2.setCursor(10, 62); u8g2.print(     "Speichern");
+    u8g2.setCursor(spalte, zeile); sprintf(ausgabe,"Autostart %3s", (autostart==0?"aus":"ein"));     u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, zeile*2); sprintf(ausgabe,"Autokorr. %3s", (autokorrektur==0?"aus":"ein")); u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, zeile*3); sprintf(ausgabe,"-> Kulanz %2dg", kulanz_gr);                     u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, zeile*5); u8g2.print(     "Speichern");
 
     // Positionsanzeige im Menu. "*" wenn nicht ausgewählt, Pfeil wenn ausgewählt
     if ( wert_aendern == false ) {
-      u8g2.setCursor(0, 10+(menuitem*13)); u8g2.print("*");
+      u8g2.setCursor(0, zeile+(menuitem*zeile)); u8g2.print("*");
     } else {
-      u8g2.setFont(u8g2_font_open_iconic_arrow_1x_t);
-      u8g2.drawGlyph(0, 10+(menuitem*13), 0x42);
-      u8g2.setFont(u8g2_font_courB10_tf);     
+       u8g2.setCursor(0, (zeile)+((menuitem)*zeile)); u8g2.print("-");
     }
     screen_zeigen();
 
@@ -1167,7 +1171,7 @@ void setupAutomatik(void) {
 
     // Menu verlassen 
     if ( (digitalRead(SELECT_SW) == SELECT_PEGEL) && (menuitem == 4) ) {
-      u8g2.setCursor(108, 10+(menuitem*13));
+      u8g2.setCursor(spalte*11, zeile+(menuitem*zeile));
       u8g2.print("OK");
       screen_zeigen();
       delay(1000);
@@ -1180,8 +1184,9 @@ void setupFuellmenge(void) {
     int j,k;
     int blinktime;
     initRotaries(SW_MENU, fmenge_index, 0, 4, -1);
-      
-    u8g2.setFont(u8g2_font_courB10_tf);
+    u8g2.setFont(FrontMenue);
+    int zeile = TFT_WIDTH/6;
+    int spalte = u8g2.getUTF8Width("A");
     i = 1;
     while (i > 0) {
       if ((digitalRead(button_stop_pin)) == HIGH)
@@ -1191,12 +1196,12 @@ void setupFuellmenge(void) {
       clearScreen();
       j = 0;
       while( j < 5  ) {
-        u8g2.setCursor(10, 10+(j*13));    
+        u8g2.setCursor(spalte, zeile+(j*zeile));    
         sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]);
         u8g2.print(ausgabe);
         j++;
       }
-      u8g2.setCursor(0, 10+(getRotariesValue(SW_MENU)*13));    
+      u8g2.setCursor(0, zeile+(getRotariesValue(SW_MENU)*zeile));    
       u8g2.print("*");
       screen_zeigen();
 
@@ -1215,7 +1220,7 @@ void setupFuellmenge(void) {
               
       j = 0;
       while( j < 5  ) {
-        u8g2.setCursor(10, 10+(j*13));
+        u8g2.setCursor(spalte, zeile+(j*zeile));
         if (j == pos){ 
           if (blinktime < 3) { sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]);  } 
           else { sprintf(ausgabe, "%5s %3s","   ",GlasTypArray[glaeser[j].GlasTyp]);}
@@ -1239,7 +1244,7 @@ void setupFuellmenge(void) {
 
       j = 0;
       while( j < 5  ) {
-        u8g2.setCursor(10, 10+(j*13));
+        u8g2.setCursor(spalte, zeile+(j*zeile));
         if (j == pos){ 
           if (blinktime < 3) {sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]);} 
           else {sprintf(ausgabe, "%4dg %3s",glaeser[pos].Gewicht,"  ");}
@@ -1255,13 +1260,13 @@ void setupFuellmenge(void) {
              clearScreen();
              j = 0;
             while( j < 5  ) {
-            u8g2.setCursor(10, 10+(j*13));    
+            u8g2.setCursor(spalte, zeile+(j*zeile));    
             sprintf(ausgabe, "%4dg %3s", glaeser[j].Gewicht, GlasTypArray[glaeser[j].GlasTyp]);
             u8g2.print(ausgabe);
             j++;
             }
 
-        u8g2.setCursor(0, 10+(13*pos));    
+        u8g2.setCursor(0, zeile+(zeile*pos));    
         u8g2.print("*");
         screen_zeigen();
         delay(1000);
@@ -1310,19 +1315,22 @@ void setupParameter(void) {
     }
 
     // Menu
-    u8g2.setFont(u8g2_font_courB10_tf);
+    u8g2.setFont(FrontMenue);
+    int zeile = TFT_WIDTH/6;
+    int spalte = u8g2.getUTF8Width("A");
+
     clearScreen();
     sprintf(ausgabe,"Buzzer    %3s", (buzzermode==0?"aus":"ein"));     
-    u8g2.setCursor(10, 10);    u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, zeile);    u8g2.print(ausgabe);
     sprintf(ausgabe,"Menu   %6s", (setup_modern==0?" Liste":"Scroll"));     
-    u8g2.setCursor(10, 23);    u8g2.print(ausgabe);
-    u8g2.setCursor(10, 62);    u8g2.print("Speichern");
+    u8g2.setCursor(spalte, zeile*2);    u8g2.print(ausgabe);
+    u8g2.setCursor(spalte, zeile*5);    u8g2.print("Speichern");
 
     // Positionsanzeige im Menu. "*" wenn nicht ausgewählt, Pfeil wenn ausgewählt
     if ( wert_aendern == false ) {
-       u8g2.setCursor(0, 10+((menuitem)*13)); u8g2.print("*");
+       u8g2.setCursor(0, (zeile)+((menuitem)*zeile)); u8g2.print("*");
     } else {
-       u8g2.setCursor(0, 10+((menuitem)*13)); u8g2.print("-");
+       u8g2.setCursor(0, (zeile)+((menuitem)*zeile)); u8g2.print("-");
     }
     screen_zeigen();
     
@@ -1363,7 +1371,7 @@ void setupParameter(void) {
 
       // Menu verlassen 
       if ( (digitalRead(SELECT_SW) == SELECT_PEGEL) && (menuitem == 4) ) {
-        u8g2.setCursor(108, 10+(menuitem*13));
+        u8g2.setCursor(spalte*11, ((menuitem+1)*zeile));
         u8g2.print("OK");
         screen_zeigen();
                 
@@ -1382,17 +1390,19 @@ void setupClearPrefs(void) {
        return;
     
     pos = getRotariesValue(SW_MENU);
-    u8g2.setFont(u8g2_font_courB10_tf);
+    u8g2.setFont(FrontMenue);
+    int zeile = TFT_WIDTH/6;
+    int spalte = u8g2.getUTF8Width("A");
     clearScreen();
-    u8g2.setCursor(10, 12);    u8g2.print("Löschen");
-    u8g2.setCursor(10, 28);    u8g2.print("Zurück!");
+    u8g2.setCursor(spalte, zeile);    u8g2.print("Löschen");
+    u8g2.setCursor(spalte, 2*zeile);    u8g2.print("Zurück!");
     
-    u8g2.setCursor(0, 12+((pos)*16));
+    u8g2.setCursor(0, zeile+((pos)*zeile));
     u8g2.print("*");
     screen_zeigen();
  
     if ((digitalRead(SELECT_SW)) == SELECT_PEGEL) {      
-      u8g2.setCursor(105, 12+((pos)*16));
+      u8g2.setCursor(spalte*11, zeile+((pos)*zeile));
       u8g2.print("OK");
       screen_zeigen();
       if ( pos == 0) {
@@ -1427,27 +1437,29 @@ void processSetupList(void) {
 
   int menuitem = getRotariesValue(SW_MENU);
 
-  u8g2.setFont(u8g2_font_courB10_tf);
+  u8g2.setFont(FrontMenue);
   clearScreen();
+  int Zeile = TFT_WIDTH/6;
+  int spalte = u8g2.getUTF8Width("A");
   if( menuitem < 5 ) {
-     u8g2.setCursor(10, 10);   u8g2.print("Tara");
-     u8g2.setCursor(10, 23);   u8g2.print("Kalibrieren");
-     u8g2.setCursor(10, 36);   u8g2.print("Korrektur");
-     u8g2.setCursor(10, 49);   u8g2.print("Füllmenge");
-     u8g2.setCursor(10, 62);   u8g2.print("Automatik");
+     u8g2.setCursor(spalte, Zeile);   u8g2.print("Tara");
+     u8g2.setCursor(spalte, 2*Zeile);   u8g2.print("Kalibrieren");
+     u8g2.setCursor(spalte, 3*Zeile);   u8g2.print("Korrektur");
+     u8g2.setCursor(spalte, 4*Zeile);   u8g2.print("Füllmenge");
+     u8g2.setCursor(spalte, 5*Zeile);   u8g2.print("Automatik");
      u8g2.setFont(u8g2_font_open_iconic_arrow_2x_t);
-     u8g2.drawGlyph(112, 64, 0x40);  
+     u8g2.drawGlyph(spalte*13, 5*Zeile, 0x40);  
   } else {
-     u8g2.setCursor(10, 10);   u8g2.print("Servowinkel");
-     u8g2.setCursor(10, 23);   u8g2.print("Parameter");
-     u8g2.setCursor(10, 36);   u8g2.print("Zähler");//Kud
-     u8g2.setCursor(10, 49);   u8g2.print("Zähler Trip");//Kud     
-     u8g2.setCursor(10, 62);   u8g2.print("Clear Prefs");
+     u8g2.setCursor(spalte, Zeile);   u8g2.print("Servowinkel");
+     u8g2.setCursor(spalte, 2*Zeile);   u8g2.print("Parameter");
+     u8g2.setCursor(spalte, 3*Zeile);   u8g2.print("Zähler");//Kud
+     u8g2.setCursor(spalte, 4*Zeile);   u8g2.print("Zähler Trip");//Kud     
+     u8g2.setCursor(spalte, 5*Zeile);   u8g2.print("Clear Prefs");
      u8g2.setFont(u8g2_font_open_iconic_arrow_2x_t);
-     u8g2.drawGlyph(112, 16, 0x43);  
+     u8g2.drawGlyph(spalte*13, Zeile, 0x43);  
   }
-  u8g2.setFont(u8g2_font_courB10_tf);
-  u8g2.setCursor(0, 10 + (((menuitem)%5) * 13));
+  u8g2.setFont(FrontMenue);
+  u8g2.setCursor(0, (Zeile) + (((menuitem)%5) * Zeile));
   u8g2.print("*");
   screen_zeigen();
 
@@ -1477,6 +1489,7 @@ void processSetupList(void) {
     initRotaries(SW_MENU, lastpos, 0, 9, -1);      // Menu-Parameter könnten verstellt worden sein
   }
 }
+
 void processSetupScroll(void) {
   if ( modus != MODE_SETUP ) {
      modus = MODE_SETUP;
