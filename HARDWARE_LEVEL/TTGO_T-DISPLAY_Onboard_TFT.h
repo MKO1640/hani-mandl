@@ -7,8 +7,8 @@
 #define use_TFT  // Hanimandl sagen das er die e-SPI Libs verwenden soll
 #define Logo1
 #define RotateScreen 1
-#define OffsetX 50
-#define OffsetY 30
+#define OffsetX 0
+#define OffsetY 0
 // Pin Definitionen der Hardware
 const int vext_ctrl_pin        = -1;
 // Taster 
@@ -34,3 +34,6 @@ const int buzzer_pin = 33;
 // LED
 const int LED_pin = -1;  //<- Vcc auf -1 wenn nicht benötig
 const int LED_BUILTIN=-1;
+
+
+#define Big_Front u8g2_font_courB18_tf //todo: switch between frontsize automatic with screen size

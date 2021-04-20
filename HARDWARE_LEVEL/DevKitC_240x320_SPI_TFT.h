@@ -3,12 +3,11 @@
    ****           SCREEN_ILI9341_SPI_240x320        *** 
    ****************************************************
 */
-
 #define use_TFT                                 // Hanimandl sagen das er die e-SPI Libs verwenden soll
 #define Logo1
 #define RotateScreen 1
-#define OffsetX 70
-#define OffsetY 80
+#define OffsetX 0
+#define OffsetY 0
 // Pin Definitionen der Hardware
 const int vext_ctrl_pin        = -1;
 // Taster 
@@ -34,3 +33,5 @@ const int buzzer_pin = 33;
 //LED
 const int LED_pin = -1;
 const int LED_BUILTIN = -1;
+
+#define Big_Front u8g2_font_courB24_tf
