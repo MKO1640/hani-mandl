@@ -1,7 +1,11 @@
 #include <U8g2lib.h>
 // OLED fuer Heltec WiFi Kit 32 (ESP32 onboard OLED) 
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);
+// U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/ 15, /* data=*/ 4, /* reset=*/ 16);
 //U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ 16, /* clock=*/ 15, /* data=*/ 4);   // HW I2C crashed den Code
+// ggf. pin 16 noch tauschen, da beim WROVER der fürs externe SPI RAM verwendet wird
+U8G2_SSD1309_128X64_NONAME0_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/ 18, /* data=*/ 4, /* cs=*/ 15, /* dc=*/ 21, /* reset=*/ 16);
+
+
 #define Logo1
 #define OffsetX
 #define OffsetY
@@ -44,3 +48,10 @@ const int hx711_dt_pin  = 5;
 static int buzzer_pin = 25;
 const int LED_pin = -1;
 const int LED_BUILTIN = -1;
+
+// Menu
+#define MENU_WIDTH 64
+#define MENU_HEIGHT 128
+#define BIG_FRONT u8g2_font_courB18_tf
+#define FRONT_MENU u8g2_font_courB10_tf
+#define FRONT_MENU_GL u8g2_font_open_iconic_arrow_t

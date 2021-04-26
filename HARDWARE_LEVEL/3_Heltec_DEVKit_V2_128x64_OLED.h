@@ -36,5 +36,10 @@ const int hx711_dt_pin  = 5;
 static int buzzer_pin = 25;
 const int LED_pin = 2;
 const int LED_BUILTIN = -1;
-#define Big_Front u8g2_font_courB18_tf
-#define FrontMenue u8g2_font_courB10_tf
+
+// Menu
+#define MENU_WIDTH 64
+#define MENU_HEIGHT 128
+#define BIG_FRONT u8g2_font_courB18_tf
+#define FRONT_MENU u8g2_font_courB10_tf
+#define FRONT_MENU_GL u8g2_font_open_iconic_arrow_t

@@ -34,5 +34,11 @@ const int buzzer_pin = 33;
 const int LED_pin = -1;
 const int LED_BUILTIN = -1;
 
-#define Big_Front u8g2_font_courB24_tf
-#define FrontMenue u8g2_font_courB24_tf //orginal u8g2_font_courB10_tf
+// settings fürs Menue
+#define MENU_WIDTH 320
+#define MENU_HEIGHT 200
+#define Use_Switch_Bar // rest unterhalb des Menus
+#define Use_MENU_FRAMES
+#define BIG_FRONT u8g2_font_courB24_tf
+#define FRONT_MENU u8g2_font_courB24_tf //orginal u8g2_font_courB10_tf
+#define FRONT_MENU_GL u8g2_font_open_iconic_arrow_4x_t

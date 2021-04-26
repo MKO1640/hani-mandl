@@ -36,5 +36,14 @@ const int LED_pin = -1;  //<- Vcc auf -1 wenn nicht benötig
 const int LED_BUILTIN=-1;
 
 
-#define Big_Front u8g2_font_courB18_tf //todo: switch between frontsize automatic with screen size
-#define FrontMenue u8g2_font_courB14_tf //orginal u8g2_font_courB10_tf
+#define BIG_FRONT u8g2_font_courB18_tf //todo: switch between frontsize automatic with screen size
+
+
+// Menu
+#define MENU_WIDTH 240
+#define MENU_HEIGHT 135
+#define Use_MENU_FRAMES
+#define BIG_FRONT u8g2_font_courB18_tf
+#define FRONT_MENU u8g2_font_courB18_tf
+//#define Use_Switch_Bar // rest unterhalb des Menus
+#define FRONT_MENU_GL u8g2_font_open_iconic_arrow_2x_t
