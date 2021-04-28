@@ -75,8 +75,12 @@
                                  Servo-defaults für die neue Bibliothek angepasst
   2021-01 Andreas Motl       | Version 0.2.9.1
                                - PlatformIO-Support an neue Servo-Bibliothek angepasst
+  2021-04 Michael Kurzweil   | Version 0.3.x.x (in Entwicklung)
+                               - ansprechenderes Menüdesign und Beseitigen kleinerer Anzeigefehler im Menu
+                               - erschließung von SPI TFT Displays und verschiedenen Displaygrößen
+                               - auslagern der Hardwarelevel in seperate header Dateien um den Code Übersichtlicher zu machen
+                               - Erschließung von TTGO-T Display und DevKitC mit 320x240 SPI TFT
 
-                                  
   This code is in the public domain.
    
   Hinweise zur Hardware
@@ -89,9 +93,17 @@
 #include <HX711.h>        // aus dem Arduino-Bibliotheksverwalter
 #include <ESP32Servo.h>   // aus dem Arduino-Bibliotheksverwalter
 #include <Preferences.h>  // aus dem Board Support Package (BSP) von espressif, wird verfügbar, wenn ein ESP32-board ausgewählt ist
+                          // Die Librarys für TFT Displays werden später geladen
 
-//
-// Hier den Code auf die verwendete Hardware einstellen
+/* *******************************************************************************************************************
+* ARDUINO IDE: Bei verwendung der IDE  Hier den Code auf die verwendete Hardware einstellen. Bei verwendung von TFT Displays muß 
+*              die eSPI_TFT Lib manuell in der User_Setup.h der Library Konfiguriert werden.
+* PlatformIO:  hier brauchen keine Einstellungen für Hardwarelevel und Display mehr gemacht werden. 
+*              Bitte in der Platformio.ini die ensprechende Hardware auswählen und auskommentieren. 
+*
+* DIE Pin definitionen der einzelnen Hardwarelevel wurde in den UnterOrdner "HARDWARE_LEVEL" verschoben. 
+* Die Dateien sind nach dem Hardwareleveln Durchnummeriert.
+********************************************************************************************************************** */
 
 //#define HARDWARE_LEVEL 4        // 1 = originales Layout mit Schalter auf Pin 19/22/21
                                 // 2 = Layout für V2 mit Schalter auf Pin 23/19/22
