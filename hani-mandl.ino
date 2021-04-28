@@ -311,19 +311,19 @@ void IRAM_ATTR isr2() {
       }
       rotaries[rotary_select].Value = constrain( rotaries[rotary_select].Value, rotaries[rotary_select].Minimum, rotaries[rotary_select].Maximum );
       rotating = false;
-#ifdef isDebug
-#if isDebug >= 5
+  #ifdef isDebug
+  #if isDebug >= 5
       Serial.print(" Rotary Value changed to ");
       Serial.println(getRotariesValue(rotary_select));
-#endif 
-#endif 
+  #endif 
+  #endif 
     }
     aLastState = aState; // Updates the previous state of the outputA with the current state
-}
-#endif
+ }
+ #endif
 
 //
-// Skalierung des Rotaries für verschiedene Rotary Encoder oder Simulation über Poti
+ // Skalierung des Rotaries für verschiedene Rotary Encoder oder Simulation über Poti
 int getRotariesValue( int rotary_mode ) {
 #ifdef USE_ROTARY
     return (rotaries[rotary_mode].Value / ROTARY_SCALE);
@@ -561,7 +561,7 @@ void setupTripCounter(void) { //Kud
       u8g2.print(ausgabe);
       j++;
     }
-    clearScreen();
+    screen_zeigen();
     delay(100);
   }
 //**************************************************************************
@@ -852,10 +852,10 @@ void setupCalibration(void) {
   int zeile = MENU_HEIGHT/6;
   int spalte = u8g2.getUTF8Width("A");  i = 1;
   clearScreen();
-  u8g2.setCursor(0, zeile);    u8g2.print("Bitte Waage");
-  u8g2.setCursor(0, 2*zeile);    u8g2.print("leeren");
-  u8g2.setCursor(0, 3*zeile);    u8g2.print("und mit OK");
-  u8g2.setCursor(0, 4*zeile);    u8g2.print("bestätigen");
+  u8g2.setCursor(spalte, zeile);      u8g2.print("Bitte Waage");
+  u8g2.setCursor(spalte, 2*zeile);    u8g2.print("leeren");
+  u8g2.setCursor(spalte, 3*zeile);    u8g2.print("und mit OK");
+  u8g2.setCursor(spalte, 4*zeile);    u8g2.print("bestätigen");
   screen_zeigen();
     
   i = 1;
@@ -880,7 +880,7 @@ void setupCalibration(void) {
   
     int blinktime = (millis()/10) % 5;
     clearScreen();
-    u8g2.setCursor(0, zeile);u8g2.print("Bitte "); 
+    u8g2.setCursor(spalte, zeile);u8g2.print("Bitte "); 
 
     if (blinktime < 3) {
       sprintf(ausgabe, "%dg", kali_gewicht);
@@ -888,19 +888,19 @@ void setupCalibration(void) {
       sprintf(ausgabe, "     ");
     }
     u8g2.print(ausgabe);
-    u8g2.setCursor(0, 2*zeile);    u8g2.print("aufstellen");
-    u8g2.setCursor(0, 3*zeile);    u8g2.print("und mit OK");
-    u8g2.setCursor(0, 4*zeile);    u8g2.print("bestätigen");
+    u8g2.setCursor(spalte, 2*zeile);    u8g2.print("aufstellen");
+    u8g2.setCursor(spalte, 3*zeile);    u8g2.print("und mit OK");
+    u8g2.setCursor(spalte, 4*zeile);    u8g2.print("bestätigen");
     screen_zeigen();
       
     if ((digitalRead(SELECT_SW)) == SELECT_PEGEL) {
       clearScreen();
-      u8g2.setCursor(0, 1*zeile);    u8g2.print("Die Waage");
-      u8g2.setCursor(0, 2*zeile);    u8g2.print("wurde auf");
-      u8g2.setCursor(0, 3*zeile);u8g2.print(" "); 
+      u8g2.setCursor(spalte, 1*zeile);    u8g2.print("Die Waage");
+      u8g2.setCursor(spalte, 2*zeile);    u8g2.print("wurde auf");
+      u8g2.setCursor(spalte, 3*zeile);u8g2.print(" "); 
       sprintf(ausgabe, "%dg", kali_gewicht);
       u8g2.print(ausgabe);
-      u8g2.setCursor(0, 4*zeile);    u8g2.print("kalibriert.");
+      u8g2.setCursor(spalte, 4*zeile);    u8g2.print("kalibriert.");
       screen_zeigen();
       gewicht_raw  = scale.get_units(10);
       faktor       = gewicht_raw / kali_gewicht;
